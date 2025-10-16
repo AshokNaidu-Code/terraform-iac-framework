@@ -11,7 +11,7 @@ jobs:
       - name: List files
         run: ls -al environments/dev
 
-      - name: Terraform Init
+      - name: Terraform Init and Apply
         working-directory: environments/dev
         run: terraform init -backend-config=backend.conf
              terraform apply -auto-approve
