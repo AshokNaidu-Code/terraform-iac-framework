@@ -1,0 +1,14 @@
+name: Terraform Apply
+on:
+  push:
+    branches: [ main ]
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: hashicorp/setup-terraform@v2
+      - name: Init & Apply
+        run: |
+          terraform init -backend-config=environments/dev/backend.conf
+          terraform apply -auto-approve
