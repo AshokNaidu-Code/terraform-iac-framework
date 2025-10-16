@@ -13,5 +13,6 @@ jobs:
 
       - name: Terraform Init and Apply
         working-directory: environments/dev
-        run: terraform init -backend-config=backend.conf
+        run: |
+             terraform init -backend-config=backend.conf
              terraform apply -auto-approve
