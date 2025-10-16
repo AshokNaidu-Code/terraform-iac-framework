@@ -57,10 +57,10 @@ terraform apply -var-file=terraform.tfvars -auto-approve
 
 1. Identify the last successful commit in GitHub.
 2. Revert to that commit:
-   ```bash
+```bash
 git revert <commit-hash>
 git push origin main
-   ```
+```
 3. Workflow will re-run and restore infrastructure to the previous state.
 
 ## Cleanup

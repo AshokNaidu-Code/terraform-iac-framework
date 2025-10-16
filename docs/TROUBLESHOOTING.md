@@ -58,19 +58,41 @@
 - **Cause**: Missing module directories or incorrect `source` paths.
 - **Resolution**: Verify folder structure matches module `source` references, e.g., `source = "../../modules/vpc"`.
 
+## 10. Common AWS Issues
+
+- IAM permission denied errors require policy review and adjustments.  
+- Network restrictions affecting access to S3 or DynamoDB should be addressed.  
+
+## 11. CI/CD Pipeline Failures
+
+- Validate presence and correctness of all required secrets and environment variables.  
+- Confirm working directories in pipeline steps are correct.  
+- Ensure `terraform init` successfully completes before any validate or apply commands.
+
+## 12. Revert and Recovery
+
+- Backups of state files should be maintained.  
+- Restore previous state file versions if needed.  
+- Use `terraform state` commands for advanced state file manipulation.
+
+## 12. Support & Reporting
+
+- Check AWS CloudTrail and CloudWatch logs for errors.  
+- Open issues in this repository with detailed logs and error messages for help.
+
 ## Debugging Tips
 - Always check syntax with:
-  ```bash
+```bash
   terraform fmt -check
   terraform validate
-  ```
+```
 - Inspect plan output for hints:
-  ```bash
+ ```bash
   terraform plan -out=tfplan
   terraform show -json tfplan | jq .
   ```
 - Use verbose logging:
-  ```bash
+ ```bash
   TF_LOG=DEBUG terraform apply
   ```
 

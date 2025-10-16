@@ -1,6 +1,6 @@
 # Terraform IaC Framework
 
-[![Build Status](https://github.com/AshokNaidu-Code/terraform-iac-framework/actions/workflows/terraform-ci.yml/badge.svg)](https://github.com/AshokNaidu-Code/terraform-iac-framework/actions/workflows/terraform-ci.yml)  
+[![Build Status](https://github.com/AshokNaidu-Code/terraform-iac-framework/actions/workflows/terraform-apply.yml/badge.svg)](https://github.com/AshokNaidu-Code/terraform-iac-framework/actions/workflows/terraform-apply.yml)  
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 ## Overview
@@ -19,41 +19,54 @@ It features reusable modules, robust remote state management, automated drift de
 - **Testing with Terratest**: Unit and integration tests for infrastructure reliability  
 - **CI/CD Pipelines**: Automated validation, planning, application, and coverage tests
 
-## Architecture Overview
+## Documentation
 
+For detailed information, refer to the following documentation:
 
+- [Architecture Overview](docs/ARCHITECTURE.md)
+- [Deployment Instructions](docs/DEPLOYMENT.md)
+- [Troubleshooting Guide](docs/TROUBLESHOOTING.md)
 
+## Project Folder Structure
 
-flowchart LR
-  subgraph State Management
-    S3[S3 Bucket for Terraform State]
-    DDB[DynamoDB Lock Table]
-  end
-
-  subgraph Modules
-    VPC[VPC Module]
-    EC2[EC2 Module]
-    RDS[RDS Module]
-    SG[Security Groups Module]
-  end
-
-  subgraph Environments
-    DEV[Dev Environment]
-    STG[Staging Environment]
-    PROD[Production Environment]
-  end
-
-  subgraph CI_CD
-    Validate[Validate & Plan]
-    Apply[Apply Changes]
-    Drift[Drift Detection]
-  end
-
-  State Management --> Environments
-  Modules --> Environments
-  Environments --> CI_CD
-
+```
+terraform-iac-framework/
+├── .github/
+│   └── workflows/
+│       ├── terraform-check.yml        # PR validation & planning
+│       ├── terraform-apply.yml        # Apply on main branch
+│       └── drift-detection.yml        # Scheduled drift checks
+├── bootstrap/                         # State backend setup
+│   ├── provider.tf
+│   ├── variables.tf
+│   ├── s3-backend.tf
+│   ├── dynamodb-lock.tf
+│   └── outputs.tf
+├── environments/                     # Environment-specific configs
+│   ├── dev/
+│   │   ├── backend.conf
+│   │   ├── main.tf
+│   │   ├── variables.tf
+│   │   └── terraform.tfvars
+│   ├── staging/                      # Same structure as dev
+│   └── prod/                         # Same structure as dev
+├── modules/                          # Reusable Terraform modules
+│   ├── vpc/
+│   ├── ec2/
+│   ├── rds/
+│   └── security-groups/
+├── scripts/
+│   └── drift-check.sh                # Drift detection script
+├── tests/
+│   ├── unit/                         # Module unit tests (Terratest)
+│   └── integration/                  # End-to-end integration tests
+├── docs/
+│   ├── ARCHITECTURE.md              # High-level architecture and diagrams
+│   ├── DEPLOYMENT.md                # Step-by-step deployment instructions
+│   └── TROUBLESHOOTING.md           # Common errors and resolutions
+├── README.md                         # Project overview and quick start guide
 └── .gitignore
+```
 
 
 ## Getting Started
