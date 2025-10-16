@@ -1,0 +1,22 @@
+# Terraform state files
+*.tfstate
+*.tfstate.backup
+
+# Crash logs
+crash.log
+
+# CLI configuration files
+.terraform/
+.terraform.lock.hcl
+
+# Override tfvars files with secrets
+*.tfvars
+!*.tfvars.example
+
+# Sensitive variable files
+*.auto.tfvars
+
+# CLI plan output
+*.plan
+
+

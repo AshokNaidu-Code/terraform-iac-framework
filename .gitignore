@@ -1,0 +1,44 @@
+# Terraform state and lock files
+*.tfstate
+*.tfstate.backup
+.terraform/
+.terraform.lock.hcl
+
+# Override tfvars with secrets; keep example files
+*.tfvars
+!*.tfvars.example
+*.auto.tfvars
+
+# Plan outputs & crash logs
+*.plan
+crash.log
+
+# AWS CLI credentials (if stored locally)
+.aws/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor directories and files
+.vscode/
+.idea/
+*.suo
+*.user
+*.sw?
+
+# Shell history
+*.history
+
+# Test artifacts & logs
+tests/**/*.log
+scripts/*.log
+
+# Generated docs (if you build PDFs or slides)
+docs/*.pdf
+docs/*.pptx
+
+# Python venv, Node modules, etc.
+venv/
+__pycache__/
+node_modules/
