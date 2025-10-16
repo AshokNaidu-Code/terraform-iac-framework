@@ -21,7 +21,7 @@ jobs:
         run: |
              terraform init -backend-config=backend.conf
              terraform apply -auto-approve
-jobs:
+
   test:
     runs-on: ubuntu-latest
     steps:
