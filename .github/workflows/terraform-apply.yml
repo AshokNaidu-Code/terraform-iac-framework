@@ -8,21 +8,26 @@ on:
 
 jobs:
   terraform-validate:
-    name: Terraform Format and Validate
+    name: Terraform Format, Init and Validate
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+    - uses: actions/checkout@v3
 
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v2
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v2
 
-      - name: Format Check
-        run: terraform fmt -check
-        working-directory: environments/dev
+    - name: Terraform Init
+      run: terraform init -backend-config=backend.conf
+      working-directory: environments/dev
 
-      - name: Validate Configuration
-        run: terraform validate
-        working-directory: environments/dev
+    - name: Format Check
+      run: terraform fmt -check
+      working-directory: environments/dev
+
+    - name: Validate Configuration
+      run: terraform validate
+      working-directory: environments/dev
+
 
   terraform-apply:
     name: Terraform Apply
