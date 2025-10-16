@@ -1,69 +1,70 @@
-# Terraform-Based Infrastructure as Code Framework - Project Procedure
+# Terraform IaC Framework
 
-## Project Overview
+[![Build Status](https://github.com/AshokNaidu-Code/terraform-iac-framework/actions/workflows/terraform-ci.yml/badge.svg)](https://github.com/AshokNaidu-Code/terraform-iac-framework/actions/workflows/terraform-ci.yml)  
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-This comprehensive Terraform-based Infrastructure as Code (IaC) framework demonstrates advanced DevOps practices through modular template design, remote state management, and automated drift detection. The project showcases enterprise-ready patterns for managing AWS infrastructure with 100% consistency across multiple environments.
+## Overview
 
-## 🎯 Key Features
+This Terraform Infrastructure as Code Framework demonstrates enterprise-grade patterns and advanced DevOps practices for managing AWS infrastructure consistently across environments.
 
-- **Modular Terraform Templates**: Reusable components for VPC, EC2, RDS, and Security Groups
-- **Input Validation**: Comprehensive validation rules ensuring configuration integrity
-- **Remote State Management**: S3 backend with DynamoDB locking for team collaboration
-- **Automated Drift Detection**: CI/CD pipeline ensuring infrastructure consistency
-- **Multi-Environment Support**: Separate configurations for dev, staging, and production
+It features reusable modules, robust remote state management, automated drift detection, and a complete CI/CD pipeline with testing.
+
+## Key Features
+
+- **Modular Terraform Templates**: VPC, EC2, RDS, and Security Groups  
+- **Remote State Management**: S3 backend with DynamoDB locking prevents state corruption  
+- **Automated Drift Detection**: CI/CD workflow checks drift daily and reports inconsistencies  
+- **Multi-Environment Support**: Dev, Staging, and Production environments with separate configs  
+- **Input Validation**: Terraform validation blocks enforce configuration correctness  
+- **Testing with Terratest**: Unit and integration tests for infrastructure reliability  
+- **CI/CD Pipelines**: Automated validation, planning, application, and coverage tests
+
+## Architecture Overview
 
 
-Repository Structure
 
 
-terraform-iac-framework/
-├── .github/
-│   └── workflows/
-│       ├── terraform-check.yml        # PR validation & planning
-│       ├── terraform-apply.yml        # Apply on main branch
-│       └── drift-detection.yml        # Scheduled drift checks
-├── bootstrap/                         # State backend setup
-│   ├── provider.tf
-│   ├── variables.tf
-│   ├── s3-backend.tf
-│   ├── dynamodb-lock.tf
-│   └── outputs.tf
-├── environments/                     # Environment-specific configs
-│   ├── dev/
-│   │   ├── backend.conf
-│   │   ├── main.tf
-│   │   ├── variables.tf
-│   │   └── terraform.tfvars
-│   ├── staging/                      # Same structure as dev
-│   └── prod/                         # Same structure as dev
-├── modules/                          # Reusable Terraform modules
-│   ├── vpc/
-│   ├── ec2/
-│   ├── rds/
-│   └── security-groups/
-├── scripts/
-│   └── drift-check.sh                # Drift detection script
-├── tests/
-│   ├── unit/                         # Module unit tests (Terratest)
-│   └── integration/                  # End-to-end integration tests
-├── docs/
-│   ├── ARCHITECTURE.md              # High-level architecture and diagrams
-│   ├── DEPLOYMENT.md                # Step-by-step deployment instructions
-│   └── TROUBLESHOOTING.md           # Common errors and resolutions
-├── README.md                         # Project overview and quick start guide
+flowchart LR
+  subgraph State Management
+    S3[S3 Bucket for Terraform State]
+    DDB[DynamoDB Lock Table]
+  end
+
+  subgraph Modules
+    VPC[VPC Module]
+    EC2[EC2 Module]
+    RDS[RDS Module]
+    SG[Security Groups Module]
+  end
+
+  subgraph Environments
+    DEV[Dev Environment]
+    STG[Staging Environment]
+    PROD[Production Environment]
+  end
+
+  subgraph CI_CD
+    Validate[Validate & Plan]
+    Apply[Apply Changes]
+    Drift[Drift Detection]
+  end
+
+  State Management --> Environments
+  Modules --> Environments
+  Environments --> CI_CD
+
 └── .gitignore
 
-# Quick Start Guide
 
-## Prerequisites
-Terraform v1.0 or later
+## Getting Started
 
-AWS CLI configured with valid credentials
+### Prerequisites
 
-GitHub access to configure Actions and secrets
+- Terraform v1.0 or later  
+- AWS CLI configured with appropriate credentials  
+- GitHub repository access and secrets set for AWS credentials  
 
-**1. Bootstrap State Backend**
-This step creates the secure remote state storage components.
+### Bootstrap Remote State
 
  ```bash
 
@@ -71,35 +72,35 @@ cd bootstrap
 terraform init
 terraform apply -auto-approve
 ```
+This sets up the S3 bucket and DynamoDB table for remote state locking.
 
-This creates:
+### Deploy Environments
 
-Encrypted S3 bucket for Terraform state
-
-DynamoDB table for state locking
-
-**2. Deploy Environments**
-Dev Environment
-```bash
-
+Choose your environment directory and run:
+ ```bash
 cd environments/dev
 terraform init -backend-config=backend.conf
 terraform validate
 terraform plan -var-file=terraform.tfvars
 terraform apply -var-file=terraform.tfvars -auto-approve
 ```
+Repeat for `staging` and `prod` by changing directories.
 
-Staging & Production
-Repeat the above steps in environments/staging and environments/prod, adjusting terraform.tfvars values as needed.
+### CI/CD Integration
 
-**3. Automated Drift Detection**
-Run manually:
+- Pull Requests trigger formatting and validation checks  
+- Merges to main trigger automated Terraform apply  
+- Scheduled daily jobs run drift detection and report anomalies
 
-```bash
+## Testing
 
-./scripts/drift-check.sh dev
-Or rely on the scheduled GitHub Actions workflow to detect drift daily and create issues when discrepancies occur.
-```
+The repository includes Terratest Go tests for modules under `tests/unit`. Run locally with:
+ ```bash
+cd tests/unit
+go test -v
+ ```
+ Or rely on the GitHub Actions pipeline for automated testing.
+
 ## CI/CD Integration
 `terraform-check.yml`: Checks formatting, validation, and planning on pull requests.
 
@@ -108,15 +109,9 @@ Or rely on the scheduled GitHub Actions workflow to detect drift daily and creat
 `drift-detection.yml`: Runs drift checks on a schedule and reports via GitHub issues.
 
 ## Contributing
-1.Fork the repository
 
-2.Create a feature branch (git checkout -b feature/xyz)
+Please fork the repo, create feature branches, commit your changes, and open pull requests against `main`. Ensure all CI checks pass before requesting reviews.
 
-3.Commit your changes and push (git push origin feature/xyz)
+## License
 
-4.Open a pull request against main
-
-5.Ensure all GitHub Actions pass before requesting review
-
-# License
-This project is licensed under the MIT License.
+This project is licensed under the MIT License - see [LICENSE](LICENSE) for details.
