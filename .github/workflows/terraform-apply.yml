@@ -21,3 +21,15 @@ jobs:
         run: |
              terraform init -backend-config=backend.conf
              terraform apply -auto-approve
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '^1.21'
+      - name: Run Terratest Unit Tests
+        working-directory: tests/unit
+        run: go test -v
