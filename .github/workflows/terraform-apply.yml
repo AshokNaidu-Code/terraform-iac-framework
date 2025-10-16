@@ -51,7 +51,7 @@ jobs:
       - name: Initialize Go Modules
         run: |
           cd tests/unit
-          go mod init github.com/yourusername/terraform-iac-framework
+          go mod init github.com/AshokNaidu-Code/terraform-iac-framework
           go mod tidy
       
       - name: Run Terratest Unit Tests
